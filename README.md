@@ -4,7 +4,7 @@
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://github.com/xmlx-io/xml-book-code)  
 [![Read Book][book-badge]](https://book.xmlx.io)
 
-# :floppy_disk: eXplainable Machine Learning -- Code :floppy_disk: #
+# :floppy_disk: eXplainable Machine Learning – Code :floppy_disk: #
 
 This repository holds a Python package implementing a collection of modules
 used by the [eXplainable Machine Learning book][book] (Jupyter Book).
