@@ -3,6 +3,9 @@
 
 # Python
 *__pycache__
+XML_Book_Code.egg-info
+build
+dist
 
 # Jupyter Book
 *.ipynb_checkpoints
