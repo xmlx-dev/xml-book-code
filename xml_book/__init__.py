@@ -15,6 +15,8 @@ __email__ = 'kacper@xmlx.io'
 __license__ = 'MIT'
 __version__ = '0.1'
 
-__all__ = []
+__all__ = ['RANDOM_SEED']
+
+RANDOM_SEED = 42
 
 cfg.setup_plotting()
