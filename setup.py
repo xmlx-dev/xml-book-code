@@ -4,9 +4,8 @@
 # License: MIT
 
 import re
+from pathlib import Path
 from setuptools import find_packages, setup
-
-import xml_book
 
 def dependencies_from_file(file_path):
     required = []
@@ -34,9 +33,20 @@ def get_dependency_version(dependency, list_of_dependencies):
 
     return matched_dependencies
 
+def get_version():
+    """Retrieves package version."""
+    version = [
+        line
+        for line in Path('xml_book/__init__.py').read_text().split('\n')
+        if '__version__' in line
+    ]
+    assert len(version) == 1, 'Only one version assignment expected.'
+    version = version[0].split(' = ')[-1].strip("'")
+    return version
+
 DISTNAME = 'XML-Book-Code'
 PACKAGE_NAME = 'xml_book'
-VERSION = xml_book.__version__
+VERSION = get_version()
 DESCRIPTION = ('A Python library implementing a collection of modules used by '
                'the eXplainable Machine Learning book')
 with open('README.md') as f:
