@@ -21,6 +21,7 @@ from xml_book import RANDOM_SEED
 __all__ = ['local_linear_surrogate']
 
 LINEAR_MODEL = np.array([[3.8, -1], [5.15, 9]])
+X_CIRC = (4.3, 5)
 
 
 def local_linear_surrogate_line(ax):
@@ -28,12 +29,21 @@ def local_linear_surrogate_line(ax):
              '--', c='black', alpha=.7, linewidth=3)
 
 
-def local_linear_surrogate(plot_axis=None, figsize=(10, 8), plot_line=True):
+def local_linear_surrogate(
+        plot_axis=None, figsize=(10, 8), plot_line=True, eval=None):
     """
     Visualises an example of a local linear surrogate in 2 dimensions.
     
     https://towardsdatascience.com/visualizing-clusters-with-pythons-matplolib-35ae03d87489
     """
+    # Evaluation parameters
+    assert eval is None or eval in ('mod-loc', 'mod-glob', 'inst-loc', 'inst-glob'), (
+        'Unknown evaluation area.')
+    eval_par = dict(color='gray', alpha=.5)
+    eval_error = .5
+    eval_edge = 3
+    eval_track = 20
+
     if plot_axis is None:
         fig = plt.figure(figsize=figsize)  # dpi=600
         fig, ax = plt.subplots(1, 1, figsize=figsize)
@@ -60,6 +70,28 @@ def local_linear_surrogate(plot_axis=None, figsize=(10, 8), plot_line=True):
 
     ax.fill(interp_x, interp_y, '--', c='red', alpha=0.2)
 
+    # Plot evaluation region
+    if eval == 'mod-glob':
+        xx, yy = np.append(interp_x, x[0]), np.append(interp_y, y[0])
+        ax.plot(xx, yy, '-', linewidth=eval_track, **eval_par)
+    elif eval == 'mod-loc':
+        ax.fill_betweenx(
+            LINEAR_MODEL[:, 1],
+            LINEAR_MODEL[:, 0] + eval_error,
+            LINEAR_MODEL[:, 0] - eval_error,
+            **eval_par)  # hatch='///'
+    elif eval == 'inst-glob':
+        r = Rectangle((-0.5, -0.5), 16.5, 10.0,  # fill=False, hatch='///'
+                      fill=True, linewidth=0, **eval_par)
+        ax.add_patch(r)
+    elif eval == 'inst-loc':
+        r = Rectangle([i - eval_edge / 2 for i in X_CIRC],
+                      eval_edge, eval_edge,  # fill=False, hatch='///'
+                      fill=True, linewidth=0, **eval_par)
+        ax.add_patch(r)
+    else:
+        assert eval is None
+
     if plot_line:
         local_linear_surrogate_line(ax)
 
@@ -77,8 +109,8 @@ def local_linear_surrogate(plot_axis=None, figsize=(10, 8), plot_line=True):
 
 
 def local_linear_surrogate_advanced(
-        plot_axis=None, figsize=(10, 8),
-        plot_line=True, scale_points=True, plot_sample=True):
+        plot_axis=None, figsize=(10, 8), plot_line=True, eval=None,
+        scale_points=True, plot_sample=True):
     """
     Visualises an example of a local linear surrogate in 2 dimensions
     with sampling and scaling.
@@ -87,12 +119,10 @@ def local_linear_surrogate_advanced(
     colours = [plt_colors.rgb2hex(cc(i)) for i in range(cc.N)]
 
     fig, ax = local_linear_surrogate(
-        plot_axis=plot_axis, figsize=figsize, plot_line=plot_line)
-
-    x_circ = (4.3, 5)
+        plot_axis=plot_axis, figsize=figsize, plot_line=plot_line, eval=eval)
 
     np.random.seed(RANDOM_SEED)
-    sample = np.random.normal(loc=x_circ, scale=(.75, 1.5), size=(20, 2))
+    sample = np.random.normal(loc=X_CIRC, scale=(.75, 1.5), size=(20, 2))
 
     x, y = LINEAR_MODEL[:, 0], LINEAR_MODEL[:, 1]
     A = np.vstack([x, np.ones(len(x))]).T
@@ -105,13 +135,13 @@ def local_linear_surrogate_advanced(
 
     sample_y = surrogate(sample)
     sample_colour = np.vectorize(lambda i: True if i else False)(sample_y)
-    sample_size = 50 / np.linalg.norm(sample - x_circ, axis=1)
+    sample_size = 50 / np.linalg.norm(sample - X_CIRC, axis=1)
 
     scale = 250 if scale_points else 100
     scale_0 = sample_size[sample_colour] if scale_points else scale
     scale_1 = sample_size[~sample_colour] if scale_points else scale
 
-    ax.scatter(*x_circ, marker='P', s=scale, linewidths=2,
+    ax.scatter(*X_CIRC, marker='P', s=scale, linewidths=2,
                c=colours[3], edgecolors=colours[2], zorder=10, alpha=.9)
     if plot_sample:
         ax.scatter(sample[sample_colour, 0], sample[sample_colour, 1],
