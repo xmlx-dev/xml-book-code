@@ -13,6 +13,7 @@ import numpy as np
 import scipy.interpolate as interpolate
 
 from matplotlib import pyplot as plt
+from matplotlib.collections import PatchCollection
 from matplotlib.patches import Rectangle
 
 from xml_book import RANDOM_SEED
@@ -24,21 +25,40 @@ LINEAR_MODEL = np.array([[3.8, -1], [5.15, 9]])
 X_CIRC = (4.3, 5)
 
 
-def local_linear_surrogate_line(ax):
+def draw_local_surrogate_line(ax):
     ax.plot(LINEAR_MODEL[:, 0], LINEAR_MODEL[:, 1],
              '--', c='black', alpha=.7, linewidth=3)
 
 
-def local_linear_surrogate(
-        plot_axis=None, figsize=(10, 8), plot_line=True, eval=None):
+def draw_local_surrogate_tree(ax):
+    # y: 0--9
+    # , 11.5, 15 # , 0, 0 # , 9, 9
+    ax.vlines([2, 4.5, 6, 9], [0, 0, 0, 0], [7, 7, 7, 7],
+            linestyles='--', colors='black', alpha=.7, linewidth=3)
+    # x: 0--15
+    ax.hlines([7], [0], [15],  # 11.5
+            linestyles='--', colors='black', alpha=.7, linewidth=3)
+
+    surrogate = []
+    surrogate += [Rectangle((2, 0), 2.5, 7, fill=None),
+                  Rectangle((6, 0), 3, 7, fill=None),
+                  # Rectangle((11.5, 0), 4.5, 9, fill=None),
+                  Rectangle((0, 7), 15, 2, fill=None)]  # 11.5
+    pc = PatchCollection(  # facecolor=None
+        surrogate, match_original=True, hatch='//', linewidth=0, edgecolor=None)
+    ax.add_collection(pc)
+
+
+def local_surrogate(
+        plot_axis=None, figsize=(10, 8), surrogate_type=None, eval=None):
     """
-    Visualises an example of a local linear surrogate in 2 dimensions.
-    
-    https://towardsdatascience.com/visualizing-clusters-with-pythons-matplolib-35ae03d87489
+    Visualises an example of a local surrogate in 2 dimensions.
     """
     # Evaluation parameters
     assert eval is None or eval in ('mod-loc', 'mod-glob', 'inst-loc', 'inst-glob'), (
         'Unknown evaluation area.')
+    assert surrogate_type is None or surrogate_type in ('linear', 'tree'), (
+        'Unknown surrogate type.')
     eval_par = dict(color='gray', alpha=.5)
     eval_error = .5
     eval_edge = 3
@@ -92,8 +112,10 @@ def local_linear_surrogate(
     else:
         assert eval is None
 
-    if plot_line:
-        local_linear_surrogate_line(ax)
+    if surrogate_type == 'linear':
+        draw_local_surrogate_line(ax)
+    elif surrogate_type == 'tree':
+        draw_local_surrogate_tree(ax)
 
     ax.set_xlim((-0.1, 15.15))
     ax.set_ylim((-0.1, 9.05))
@@ -105,6 +127,20 @@ def local_linear_surrogate(
                     which='both', bottom='off', top='off', labelbottom='off',
                     right='off', left='off', labelleft='off')
     plt.tight_layout()
+    return fig, ax
+
+
+def local_linear_surrogate(
+        plot_axis=None, figsize=(10, 8), plot_line=True, eval=None):
+    """
+    Visualises an example of a local linear surrogate in 2 dimensions.
+
+    https://towardsdatascience.com/visualizing-clusters-with-pythons-matplolib-35ae03d87489
+    """
+    surrogate_type = 'linear' if plot_line else None
+    fig, ax = local_surrogate(
+        plot_axis=plot_axis, figsize=figsize,
+        surrogate_type=surrogate_type, eval=eval)
     return fig, ax
 
 
