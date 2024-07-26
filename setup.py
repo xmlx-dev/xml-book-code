@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 #
-# Copyright (C) 2022 Kacper Sokol <kacper@xmlx.io>
+# Copyright (C) 2022 Kacper Sokol <kacper@xmlx.dev>
 # License: MIT
 
 import re
@@ -52,9 +52,9 @@ DESCRIPTION = ('A Python library implementing a collection of modules used by '
 with open('README.md') as f:
     LONG_DESCRIPTION = f.read()
 MAINTAINER = 'Kacper Sokol'
-MAINTAINER_EMAIL = 'kacper@xmlx.io'
-URL = 'https://github.com/xmlx-io/xml-book-code/'
-DOWNLOAD_URL = 'https://github.com/xmlx-io/xml-book-code/releases'
+MAINTAINER_EMAIL = 'kacper@xmlx.dev'
+URL = 'https://github.com/xmlx-dev/xml-book-code/'
+DOWNLOAD_URL = 'https://github.com/xmlx-dev/xml-book-code/releases'
 # DOWNLOAD_URL = f'https://pypi.org/project/{DISTNAME}/#files'
 LICENSE = 'MIT'
 PACKAGES = find_packages(exclude=['*.tests', '*.tests.*', 'tests.*', 'tests'])

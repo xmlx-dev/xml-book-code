@@ -5,7 +5,7 @@ Overview Plots
 This module implements functions for plotting examples.
 """
 
-# Author: Kacper Sokol <kacper@xmlx.io>
+# Author: Kacper Sokol <kacper@xmlx.dev>
 # License: MIT
 
 import matplotlib.colors as plt_colors

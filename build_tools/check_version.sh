@@ -1,7 +1,7 @@
 #!/bin/bash
 #title       :check_version.sh
 #description :Checks for match between git tag and the Python package version
-#author      :Kacper Sokol <kacper@xmlx.io>
+#author      :Kacper Sokol <kacper@xmlx.dev>
 #license     :MIT
 #==============================================================================
 

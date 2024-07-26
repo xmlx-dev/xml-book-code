@@ -6,7 +6,7 @@ This module configures the book execution environment.
 These options are loaded and initialised in the module init.
 """
 
-# Author: Kacper Sokol <kacper@xmlx.io>
+# Author: Kacper Sokol <kacper@xmlx.dev>
 # License: MIT
 
 import matplotlib.pyplot as plt

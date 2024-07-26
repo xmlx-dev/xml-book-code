@@ -5,7 +5,7 @@ Array Display
 This module implements HTML displaying function for NumPy arrays.
 """
 
-# Author: Kacper Sokol <kacper@xmlx.io>
+# Author: Kacper Sokol <kacper@xmlx.dev>
 # License: MIT
 
 import IPython
@@ -87,7 +87,7 @@ class DisplayArray(object):
     """
     Displays a NumPy array as either a HTML object (in the Jupyter environment)
     or a string.
-    
+
     Inspired by <https://github.com/data-8/datascience>.
     """
 

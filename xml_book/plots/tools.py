@@ -5,7 +5,7 @@ Plotting Tools
 This module implements plotting tools for the book.
 """
 
-# Author: Kacper Sokol <kacper@xmlx.io>
+# Author: Kacper Sokol <kacper@xmlx.dev>
 # License: MIT
 
 from io import StringIO

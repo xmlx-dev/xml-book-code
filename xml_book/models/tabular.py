@@ -6,7 +6,7 @@ This module implements a collection of predictive model functions used by
 the book.
 """
 
-# Author: Kacper Sokol <kacper@xmlx.io>
+# Author: Kacper Sokol <kacper@xmlx.dev>
 #         Alex Hepburn <ah13558@bristol.ac.uk>
 # License: MIT
 
